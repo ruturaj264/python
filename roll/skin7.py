@@ -52,7 +52,7 @@ def roll(input_money, risk_factor, win):
 
 
 risk_factor = 0
-input_money = 28.44
+input_money = 50
 win = True
 turn = 1
 

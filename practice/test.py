@@ -1,5 +1,13 @@
-a = [4,5,6]
-print(a.pop(2))
+
+num = 13
+
+for i in range(2,num):
+
+    if num % i == 0:
+        print('not prime')
+        break
+else:
+    print('prime')
 
 
 

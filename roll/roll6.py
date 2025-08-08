@@ -4,6 +4,7 @@ class RollAccount():
 
     def __init__(self, balance):
         self.__startBalance = round(balance, 2)
+        self.__openingBalance = balance
         self.__currentBalance = round(balance, 2)
         self.__profit = round(balance - balance, 2)
         self.__rouletteHits = []
@@ -15,18 +16,21 @@ class RollAccount():
     def credit(self, amount):
         self.__currentBalance = round(self.__currentBalance + amount, 2)
         self.__balanceHistory.append(self.__currentBalance)
-        self.__profit = round(self.__currentBalance - self.__startBalance, 2)
+        self.__profit = round(self.__currentBalance - self.__openingBalance, 2)
 
     def debit(self, amount):
         self.__currentBalance = round(self.__currentBalance - amount, 2)
         self.__balanceHistory.append(self.__currentBalance)
-        self.__profit = round(self.__currentBalance - self.__startBalance, 2)
+        self.__profit = round(self.__currentBalance - self.__openingBalance, 2)
 
     def getStartBalance(self):
         return self.__startBalance
     
     def getCurrentBalance(self):
         return self.__currentBalance
+    
+    def getOpeningBalance(self):
+        return self.__openingBalance
     
     def getProfit(self):
         return self.__profit
@@ -44,11 +48,13 @@ class RollAccount():
         return self.__balanceHistory
         
     def setStash(self):
-        
-        if self.__profit > 0 and self.__stash < (self.__startBalance * 2):
+
+        if self.__profit > 0 and self.__stash < (self.__openingBalance * 2):
             self.__stash = round(self.__stash + self.__profit, 2)
             self.__currentBalance = round(self.__currentBalance - self.__profit, 2)
             self.__profit = 0
+        
+        self.__openingBalance = self.__currentBalance
     
     def getStash(self):
         return self.__stash
@@ -81,8 +87,12 @@ class Turn():
 def roll():
 
     no_green_streak = 0
+    max_daily_loss_percent = 10
 
     for day in range(50):
+
+        daily_loss = 0
+        max_daily_loss = round(my_account.getOpeningBalance() * 0.1, 2)
 
         if my_account.getCurrentBalance() <= 0:
             break 
@@ -107,11 +117,16 @@ def roll():
 
             while i <= end:
 
+                daily_loss = my_account.getOpeningBalance() - my_account.getCurrentBalance()
+
+                if daily_loss >= max_daily_loss:
+                    break
+
                 my_target = target.next()
                 my_account.debit(bid)
                 total_spent = round(total_spent + bid, 2)
 
-                hit = random.choice([1,2,1,2,1,2,1,2,1,2,1,2,1,2,3])
+                hit = random.choice([1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3])
                 my_account.setRouletteHits(hit)
                 won = 0
 

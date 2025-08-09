@@ -12,6 +12,7 @@ class RollAccount():
         self.__balanceHistory.append(round(balance, 2))
         self.__stash = 0
         self.__noGreenStreaks = []
+        self.__rouletteLogs = [] 
 
     def credit(self, amount):
         self.__currentBalance = round(self.__currentBalance + amount, 2)
@@ -46,6 +47,12 @@ class RollAccount():
     
     def getBalanceHistory(self):
         return self.__balanceHistory
+    
+    def setRouletteLogs(self, log):
+        self.__rouletteLogs.append(log)
+    
+    def getRouletteLogs(self):
+        return self.__rouletteLogs
         
     def setStash(self):
 
@@ -92,6 +99,8 @@ def roll():
     for day in range(50):
 
         daily_loss = 0
+        daily_green_hits = 0
+        daily_bids = 0
         max_daily_loss = round(my_account.getOpeningBalance() * 0.1, 2)
 
         if my_account.getCurrentBalance() <= 0:
@@ -129,6 +138,7 @@ def roll():
                 hit = random.choice([1,2,1,2,1,2,1,2,1,2,1,2,1,2,1,2,3])
                 my_account.setRouletteHits(hit)
                 won = 0
+                daily_bids += 1
 
                 if hit == my_target:
 
@@ -148,6 +158,7 @@ def roll():
                     won = round(green_bid * 14, 2)
                     my_account.credit(won)
                     loss_streak = 0
+                    daily_green_hits += 1
 
                     print(f'{i}: target {my_target}&{3}, hit {hit}, bid {bid}, green bid {green_bid}, spent {total_spent}, won {won}, balance {my_account.getCurrentBalance()}')
 
@@ -169,6 +180,9 @@ def roll():
                     end += max_loss_streak
                     bid = round(start_bid * loss_increment_factor, 2)
 
+        daily_profit = round(my_account.getCurrentBalance() - my_account.getOpeningBalance(), 2)
+        log = f'Day {day+1}: Opening Balance {my_account.getOpeningBalance()}, Closing Balance {my_account.getCurrentBalance()}, Profit {daily_profit}, Bids {daily_bids}, Green Hits {daily_green_hits}'
+        my_account.setRouletteLogs(log)
         my_account.setStash()
 
 

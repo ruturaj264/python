@@ -38,6 +38,8 @@ df2 = df.repartition("country")  # rows with same country → same partition
 
 df = df.repartition(4)
 
+print('abcd')
+
 
 
 

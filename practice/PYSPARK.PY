@@ -12,33 +12,33 @@ product_reviews = spark.read.csv('/Volumes/mycatalog/myschema/ecom_db/product_re
 products = spark.read.csv('/Volumes/mycatalog/myschema/ecom_db/products.csv', header = True, inferSchema = True)
 df = spark.read.csv('/Volumes/mycatalog/myschema/ecom_db/products.csv', header = True, inferSchema = True)
 
-def display():
-    pass
-small_df = spark.read.csv('/Volumes/mycatalog/myschema/ecom_db/products.csv', header = True, inferSchema = True)
-large_df = spark.read.csv('/Volumes/mycatalog/myschema/ecom_db/products.csv', header = True, inferSchema = True)
+# def display():
+#     pass
+# small_df = spark.read.csv('/Volumes/mycatalog/myschema/ecom_db/products.csv', header = True, inferSchema = True)
+# large_df = spark.read.csv('/Volumes/mycatalog/myschema/ecom_db/products.csv', header = True, inferSchema = True)
 
 
-from pyspark.sql.functions import broadcast
+# from pyspark.sql.functions import broadcast
 
-# Join large_df with small_df using broadcast join
-result = large_df.join(broadcast(small_df), on="id", how="inner")
+# # Join large_df with small_df using broadcast join
+# result = large_df.join(broadcast(small_df), on="id", how="inner")
 
-spark.conf.get("spark.sql.autoBroadcastJoinThreshold")
+# spark.conf.get("spark.sql.autoBroadcastJoinThreshold")
 
-spark.conf.set("spark.sql.autoBroadcastJoinThreshold", 20 * 1024 * 1024)  # 20MB
+# spark.conf.set("spark.sql.autoBroadcastJoinThreshold", 20 * 1024 * 1024)  # 20MB
 
-spark.conf.set("spark.sql.autoBroadcastJoinThreshold", -1)  # disable it
+# spark.conf.set("spark.sql.autoBroadcastJoinThreshold", -1)  # disable it
 
-df = spark.read.csv("data.csv")
+# df = spark.read.csv("data.csv")
 
-df.groupBy("country").count()
+# df.groupBy("country").count()
 
-df2 = df.repartition(4)
-df2 = df.repartition("country")  # rows with same country → same partition
+# df2 = df.repartition(4)
+# df2 = df.repartition("country")  # rows with same country → same partition
 
-df = df.repartition(4)
+# df = df.repartition(4)
 
-print('abcd')
+# print('abcd')
 
 
 

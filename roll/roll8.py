@@ -111,6 +111,7 @@ def roll():
             bid = round(0.1/100 * my_account.getCurrentBalance(), 2)
             bid = max(0.01, bid)
             green_bid = bid
+            bait_bid = bid
             start_bid = bid
 
             max_loss_streak = 1
@@ -132,26 +133,15 @@ def roll():
                     break
 
                 my_target = target.next()
-                total_spent = round(total_spent + bid + green_bid, 2)
-                my_account.debit(bid + green_bid)
+                total_spent = round(total_spent + bid + green_bid + bait_bid, 2)
+                my_account.debit(bid + green_bid + bait_bid)
 
-                hit = random.choice([1,2,1,2,1,2,1,2,1,2,1,2,1,2,3])
+                hit = random.choice([3,2,1,2,1,2,1,2,1,2,1,2,1,4,5])
                 my_account.setRouletteHits(hit)
                 won = 0
                 daily_bids += 1
-
-                if hit == my_target:
-
-                    won = round(bid * 2, 2)
-                    my_account.credit(won)
-                    loss_streak = 0
-                    no_green_streak += 1
-
-                    print(f'{i}: target {my_target}&{3}, hit {hit}, bid {bid}, green bid {green_bid}, spent {total_spent}, won {won}, balance {my_account.getCurrentBalance()}')
-
-                    break 
                 
-                elif hit == 3:
+                if hit == 5:
 
                     my_account.setNoGreenStreaks(no_green_streak)
                     no_green_streak = 0
@@ -160,7 +150,29 @@ def roll():
                     loss_streak = 0
                     daily_green_hits += 1
 
-                    print(f'{i}: target {my_target}&{3}, hit {hit}, bid {bid}, green bid {green_bid}, spent {total_spent}, won {won}, balance {my_account.getCurrentBalance()}')
+                    print(f'{i}: target {my_target}&{3}&bait, hit {hit}, bid {bid}, green bid {green_bid}, bait bid {bait_bid}, spent {total_spent}, won {won}, balance {my_account.getCurrentBalance()}')
+
+                    break 
+
+                elif hit in [3, 4]:
+
+                    won = round(bid * 7, 2)
+                    my_account.credit(won)
+                    loss_streak = 0
+                    no_green_streak += 1
+
+                    print(f'{i}: target {my_target}&{3}&bait, hit bait, bid {bid}, green bid {green_bid}, bait bid {bait_bid}, spent {total_spent}, won {won}, balance {my_account.getCurrentBalance()}')
+
+                    break 
+
+                elif hit == my_target or (hit % 2 == my_target % 2):
+
+                    won = round(bid * 2, 2)
+                    my_account.credit(won)
+                    loss_streak = 0
+                    no_green_streak += 1
+
+                    print(f'{i}: target {my_target}&{3}&bait, hit {hit}, bid {bid}, green bid {green_bid}, bait bid {bait_bid}, spent {total_spent}, won {won}, balance {my_account.getCurrentBalance()}')
 
                     break 
                 
@@ -168,7 +180,7 @@ def roll():
 
                     no_green_streak += 1
                     loss_streak += 1
-                    print(f'{i}: target {my_target}&{3}, hit {hit}, bid {bid}, green bid {green_bid}, spent {total_spent}, won {won}, balance {my_account.getCurrentBalance()}')
+                    print(f'{i}: target {my_target}&{3}&bait, hit {hit}, bid {bid}, green bid {green_bid}, bait bid {bait_bid}, spent {total_spent}, won {won}, balance {my_account.getCurrentBalance()}')
 
 
                     bid = round(bid * 2, 2)

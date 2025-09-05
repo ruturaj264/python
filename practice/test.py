@@ -40,5 +40,28 @@
 
 
 
-    
-        
+def count_vowels(word):
+    vowels = "aeiouAEIOU"
+    return sum(1 for ch in word if ch in vowels)
+
+from pyspark.sql import SparkSession
+from pyspark.sql.functions import *
+from pyspark.sql.types import *
+
+count_vowels_udf = udf(count_vowels, IntegerType())
+
+spark = SparkSession.builder.appName("UDF Example").getOrCreate()
+
+data = [("apple",), ("banana",), ("grape",)]
+df = spark.createDataFrame(data, ["word"])
+
+df.withColumn("vowel_count", count_vowels_udf(col("word"))).show()
+
+
+spark.udf.register("countVowels", count_vowels, IntegerType())
+df.createOrReplaceTempView("words")
+
+df = spark.read.csv("data.csv")
+result = df.groupBy("city").count()
+result.show()
+

@@ -93,7 +93,7 @@ def roll(start_money, input_money, risk_factor, win, turn, old_i, old_count, old
 
 
 risk_factor = 0
-start_money = 30
+start_money = 100
 input_money = start_money
 win = True
 turn = 1

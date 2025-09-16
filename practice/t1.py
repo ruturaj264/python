@@ -14,7 +14,7 @@
 # unpack_array(array, temp)
 # print(temp)
 
-array = [[1,2,3,4],[1,2,3,4]] 
+# array = [[1,2,3,4],[1,2,3,4]] 
 # array2 = array.copy()
 
 # array[0] = 5
@@ -38,17 +38,19 @@ array = [[1,2,3,4],[1,2,3,4]]
 # b = int(y)
 # c = complex(x)
 
-def get_sum(num1, num2):
-    print(num1+num2)
+# def get_sum(num1, num2):
+#     print(num1+num2)
 
-get_sum(3, 4)
-
-
-
-def get_sum(num1, num2):
-    return num1+num2
-
-result = get_sum(3,4)
-print(result)
+# get_sum(3, 4)
 
 
+
+# def get_sum(num1, num2):
+#     return num1+num2
+
+# result = get_sum(3,4)
+# print(result)
+
+p = 'ecom_project/insights/csv_files/avg_events/part-00000-tid-5163453846133384237-510475b7-65c9-4096-b4c0-6908195a14cf-221-1-c000.csv'
+
+print(len(p.split('/')))
